@@ -73,3 +73,76 @@ SELECT Name FROM Students
 WHERE Marks>75 
 ORDER BY SUBSTR(Name,-3,3),ID ASC;
 
+#Employee Names
+SELECT name FROM Employee ORDER BY name;
+
+#Employees Salries
+SELECT name FROM Employee WHERE salary>2000 AND months<10;
+
+#Top Earners()()
+SELECT salary*months as earnings, 
+COUNT(*) FROM Employee 
+GROUP BY earnings 
+ORDER BY earnings DESC LIMIT 1;
+/*Count(*)-Counts all the employees*/
+/*GROUP BY-Clusters all the employees having similar earnings*/
+/*LIMIT 1-Gives the Max. O/P only*/
+
+#Weather Obs. Station-2
+SELECT ROUND(SUM(LAT_N),2), ROUND(SUM(LONG_W),2) FROM Station;
+
+#Weather Obs. Station-13
+SELECT TRUNCATE(SUM(LAT_N),4) FROM Station WHERE LAT_N> 38.7880 AND LAT_N<137.2345;
+
+#WOS-15()
+SELECT ROUND((LONG_W),4) FROM Station 
+WHERE LAT_N = (SELECT MAX(LAT_N) FROM Station WHERE LAT_N<137.2345);
+
+#WOS-16
+SELECT ROUND(MIN(LAT_N),4) FROM Station WHERE LAT_N>38.7780;
+
+#WOS-17
+/*
+ conditions are given for same parameter = Sub Queries.
+*/
+SELECT ROUND(LONG_W,4) FROM Station 
+WHERE LAT_N = (SELECT MIN(LAT_N) FROM Station WHERE LAT_N>38.7780);
+
+#WOS-18
+/* Manhattan Distance
+ |a-c| + |b-d| = ABS(MIN(LAT_N)-MAX(LAT_N)) + ABS(MIN(LONG_W)-MAX(LONG_W))
+*/
+SELECT ROUND(ABS(MIN(LAT_N)-MAX(LAT_N)) + ABS(MIN(LONG_W)-MAX(LONG_W)),4) FROM Station;
+
+#WOS-19
+/* Eucledian Distance
+SQRT(POWER(MAX(LAT_N)-MIN(LAT_N),2) + POWER(MAX(LONG_W)-MIN(LONG_W),2))
+*/
+SELECT ROUND(SQRT((POWER(MAX(LAT_N)-MIN(LAT_N),2)) + (POWER(MAX(LONG_W)-MIN(LONG_W),2))),4) FROM Station;
+
+#WOS-20()()()
+/* 0. (1) col. to be parted into 2 halves, having equal size for Median */
+/* 1. We have to combine CERTAIN ROWS of a table (for Specified Col. | LAT_N|) with OTHER ROWS of the SAME TABLE(for Specified Col. | LAT_N|) -> Use "SELF-JOINS"*/
+/* 2. We Joined STATION Table with itself, using Diff. ALIASES (Indicators) */
+/* 3. In 1st WHERE Clause, we Count 1 part of the row < Median */
+/* 4. Compare it with remaining part of the row > Median */
+SELECT ROUND(S.LAT_N, 4) FROM STATION S
+JOIN STATION D ON S.ID = D.ID /* Not Necessary just for Easier explanation*/
+WHERE (SELECT COUNT(D.Lat_N) FROM STATION D
+WHERE D.Lat_N < S.LAT_N) = (SELECT COUNT(D.Lat_N) FROM STATION D
+                        WHERE D.Lat_N > S.LAT_N);
+                        
+#African Cities
+SELECT ALL i.NAME 
+FROM CITY i
+JOIN COUNTRY y ON i.COUNTRYCODE = y.CODE
+WHERE CONTINENT = 'Africa';
+
+#Average Population of Each Continent
+SELECT y.CONTINENT, FLOOR(AVG(i.POPULATION)) 
+FROM CITY i 
+JOIN COUNTRY y ON i.COUNTRYCODE = y.CODE
+GROUP BY y.CONTINENT; /*For All Continent Names, Included GROUP BY*/
+
+
+
