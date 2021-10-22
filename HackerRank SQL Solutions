@@ -144,5 +144,27 @@ FROM CITY i
 JOIN COUNTRY y ON i.COUNTRYCODE = y.CODE
 GROUP BY y.CONTINENT; /*For All Continent Names, Included GROUP BY*/
 
+#Type of Traingles()()
+SELECT 
+     CASE
+         WHEN (a+b>c) AND (b+c>a) AND (a+c>b) THEN /*Triangle Rule*/
+             CASE
+                 WHEN (a=b) AND (b=c) AND (c=a) THEN 'Equilateral'
+                 WHEN (a=b) OR (b=c) OR (c=a) THEN 'Isosceles'
+                 ELSE 'Scalene'
+            END 
+         ELSE 'Not A Triangle'
+    END
+FROM TRIANGLES;
+
+#The PADS()()()
+SELECT CONCAT(name, '(', SUBSTR(occupation,1,1), ')')
+FROM occupations
+order by name asc;
+select concat('There are a total of ', count(1), ' ' , lower(occupation), 's.')
+from occupations
+group by occupation
+order by count(1) asc, occupation asc;
+
 
 
