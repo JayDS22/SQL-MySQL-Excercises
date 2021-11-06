@@ -236,3 +236,10 @@ GROUP BY c.company_code, c.founder
 ORDER BY company_code ASC;
 --------------------------------------
 
+#The Blunder
+/* 
+O/P: Diff. of Actual AVG Salary - Avg Salary (where O is replaced by Nothing)
+Condition: Give answer for "Nearest Integer" value
+*/
+SELECT CEIL(AVG(SALARY)- AVG(REPLACE(SALARY,'0',"")))
+FROM EMPLOYEES;
